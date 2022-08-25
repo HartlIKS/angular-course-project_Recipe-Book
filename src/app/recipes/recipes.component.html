@@ -3,6 +3,6 @@
         <app-recipe-list (selectionChange)="onSelectionChange($event)"></app-recipe-list>
     </div>
     <div class="col-md-7">
-        <app-recipe-detail [recipe]="selectedRecipe"></app-recipe-detail>
+        <app-recipe-detail [recipe]="selectedRecipe" (addToShoppingList)="handleAddToShoppingList($event)"></app-recipe-detail>
     </div>
 </div>

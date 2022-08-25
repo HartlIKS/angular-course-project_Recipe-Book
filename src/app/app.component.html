@@ -1,14 +1,13 @@
-<app-header></app-header>
+<app-header [(currentPage)]="page" [tabs]="{
+    'recipes':'Recipes',
+    'shopping':'Shopping List'
+}"></app-header>
 <div class="container">
     <div class="row">
-        <div class="col-md-12">
-            <app-recipes></app-recipes>
-        </div>
-    </div>
-    <hr>
-    <div class="row">
-        <div class="col-md-12">
-            <app-shopping-list></app-shopping-list>
+        <div class="col-md-12" [ngSwitch]="page">
+            <h1 class="center-block" *ngSwitchDefault>Welcome to your Recipe Book!</h1>
+            <app-recipes *ngSwitchCase="'recipes'" (addToShoppingList)="addToShoppingList($event)"></app-recipes>
+            <app-shopping-list *ngSwitchCase="'shopping'"></app-shopping-list>
         </div>
     </div>
 </div>

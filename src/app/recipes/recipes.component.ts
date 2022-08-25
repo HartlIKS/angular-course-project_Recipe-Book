@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Recipe } from './recipe.model';
+import { IngredientVolume } from '../shopping-list/ingredientvolume.model';
 
 @Component({
   selector: 'app-recipes',
@@ -8,6 +9,7 @@ import { Recipe } from './recipe.model';
 })
 export class RecipesComponent implements OnInit {
   selectedRecipe: Recipe = null;
+  @Output() addToShoppingList = new EventEmitter<{[property: string]: IngredientVolume}>();
 
   constructor() { }
 
@@ -16,5 +18,9 @@ export class RecipesComponent implements OnInit {
 
   public onSelectionChange(event: Recipe): void {
     this.selectedRecipe = event;
+  }
+
+  handleAddToShoppingList(ingredients: {[property: string]: IngredientVolume}): void {
+    this.addToShoppingList.emit(ingredients);
   }
 }

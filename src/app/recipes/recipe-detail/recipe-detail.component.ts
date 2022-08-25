@@ -1,4 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { IngredientVolume } from 'src/app/shopping-list/ingredientvolume.model';
 import { Recipe } from '../recipe.model';
 
 @Component({
@@ -8,10 +9,14 @@ import { Recipe } from '../recipe.model';
 })
 export class RecipeDetailComponent implements OnInit {
   @Input() recipe : Recipe;
+  @Output() addToShoppingList = new EventEmitter<{[property: string]: IngredientVolume}>();
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  addIngredients(): void {
+    this.addToShoppingList.emit(this.recipe.ingredients);
+  }
 }

@@ -1,0 +1,8 @@
+<div>
+    <button class="row btn btn-success" style="margin-bottom: 10px;">New Recipe</button>
+    <ul class="row list-group list-unstyled">
+        <li *ngFor="let recipe of recipes; let i = index" class="list-group-item btn btn-default" (click)="selectRecipe(i)">
+            <app-recipe-item [recipe]="recipe"></app-recipe-item>
+        </li>
+    </ul>
+</div>

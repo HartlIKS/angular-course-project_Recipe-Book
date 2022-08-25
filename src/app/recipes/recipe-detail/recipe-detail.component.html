@@ -1,0 +1,33 @@
+<div class="row">
+    <div class="col-xs-12">
+        <img [src]="recipe?.imagePath" class="img-responsive">
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <h1>{{recipe?.name}}</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="btn-group">
+            <button class="btn btn-primary dropdown-toggle">Manage<span class="caret"></span></button>
+            <ul class="dropdown-menu">
+                <li><button class="btn btn-success">Add to shopping List</button></li>
+                <li><button class="btn">Edit</button></li>
+                <li><button class="btn btn-danger">Delete</button></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <p *ngFor="let ingredient of (recipe?.ingredients || {}) | keyvalue">{{ingredient.value}}{{ingredient.key.unit}}
+            {{ingredient.key.name}}</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <p *ngFor="let line of (recipe?.preparation?.split('\n') || [])">{{line}}</p>
+    </div>
+</div>

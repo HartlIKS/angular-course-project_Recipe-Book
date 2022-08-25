@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { IngredientVolume, UnitMismatch } from '../shopping-list/ingredientvolume.model';
 
 @Component({
@@ -6,16 +6,21 @@ import { IngredientVolume, UnitMismatch } from '../shopping-list/ingredientvolum
   templateUrl: './shopping-list-edit.component.html',
   styleUrls: ['./shopping-list-edit.component.css']
 })
-export class ShoppingListEditComponent implements OnInit, OnChanges {
-  @Input() editIngredient: { name: string, amount: IngredientVolume };
+export class ShoppingListEditComponent implements OnInit {
+  _ingredient: { name: string, amount: IngredientVolume };
+  get ingredient() {
+    if(!this._ingredient) this._ingredient = {name: "", amount: new IngredientVolume(0, "")};
+    return this._ingredient;
+  }
+  @Input() set editIngredient(ingredient: {name: string, amount: IngredientVolume}) {
+    this._ingredient = ingredient;
+    this.isEditing = !!ingredient;
+  }
+  isEditing: boolean;
   @Input() unitError: UnitMismatch = null;
 
-  name: string;
-  amount: number;
-  unit: string;
-
-  @Output() onAdd = new EventEmitter<{ name: string, amount: number, unit: string }>();
-  @Output() onSet = new EventEmitter<{ ingredient: string, amount: IngredientVolume }>();
+  @Output() onAdd = new EventEmitter<{ name: string, amount: IngredientVolume }>();
+  @Output() onSet = new EventEmitter<{ name: string, amount: IngredientVolume }>();
   @Output() onDelete = new EventEmitter<string>();
 
   constructor() { }
@@ -23,51 +28,22 @@ export class ShoppingListEditComponent implements OnInit, OnChanges {
   ngOnInit(): void {
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if ("editIngredient" in changes) {
-      let ingredient: { name: string, amount: IngredientVolume } = changes.editIngredient.currentValue;
-      if (ingredient) {
-        this.name = ingredient.name;
-        this.amount = ingredient.amount.amount;
-        this.unit = ingredient.amount.unit;
-      }
-    }
-  }
-
-  public defaultName(): string {
-    if (this.editIngredient) return this.editIngredient.name;
-    return "";
-  }
-
-  public defaultUnit(): string {
-    if (this.editIngredient) return this.editIngredient.amount.unit;
-    return "";
-  }
-
   public onSubmit(): void {
-    if (this.editIngredient) {
-      this.onSet.emit({
-        ingredient: this.name,
-        amount: new IngredientVolume(this.amount, this.unit)
-      });
+    if (this.isEditing) {
+      this.onSet.emit(this.ingredient);
     } else {
-      this.onAdd.emit({
-        name: this.name,
-        amount: this.amount,
-        unit: this.unit
-      });
+      this.onAdd.emit(this.ingredient);
     }
+    this.clearForm();
   }
 
   public clearForm(): void {
-    this.editIngredient = null;
-    this.name = "";
-    this.amount = 0;
-    this.unit = "";
-    this.unitError = null;
+    this._ingredient = null;
+    this.isEditing = false;
   }
 
   public onDeleteClicked(): void {
-    if (this.editIngredient) this.onDelete.emit(this.editIngredient.name);
+    if (this.isEditing) this.onDelete.emit(this.ingredient.name);
+    this.clearForm();
   }
 }

@@ -16,20 +16,20 @@ export class ShoppingListComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  public onAddIngredient(event: { name: string, amount: number, unit: string }): void {
+  public onAddIngredient(event: { name: string, amount: IngredientVolume }): void {
     if (this.ingredients[event.name]) {
-      if (this.ingredients[event.name].unit != event.unit) {
-        this.unitError = new UnitMismatch(this.ingredients[event.name].unit, event.unit);
+      if (this.ingredients[event.name].unit != event.amount.unit) {
+        this.unitError = new UnitMismatch(this.ingredients[event.name].unit, event.amount.unit);
       } else {
-        this.ingredients[event.name].amount += event.amount;
+        this.ingredients[event.name].amount += event.amount.amount;
       }
     } else {
-      this.ingredients[event.name] = new IngredientVolume(event.amount, event.unit);
+      this.ingredients[event.name] = event.amount;
     }
   }
 
-  public onChangeIngredientAmount(event: { ingredient: string, amount: IngredientVolume }): void {
-    this.ingredients[event.ingredient] = event.amount;
+  public onChangeIngredientAmount(event: { name: string, amount: IngredientVolume }): void {
+    this.ingredients[event.name] = event.amount;
     this.selectedIngredient = null;
   }
 
@@ -43,5 +43,9 @@ export class ShoppingListComponent implements OnInit {
       name: ingredient,
       amount: this.ingredients[ingredient]
     };
+  }
+
+  public getUnit(ingredient: string): string {
+    return this.ingredients[ingredient]?.unit;
   }
 }

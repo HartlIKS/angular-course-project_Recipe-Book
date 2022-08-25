@@ -17,8 +17,7 @@ export class AppComponent {
     for(let keyval of Object.entries(ingredients)) {
       this.shoppingList.onAddIngredient({
         name: keyval[0],
-        amount: keyval[1].amount,
-        unit: keyval[1].unit
+        amount: keyval[1]
       });
     }
   }

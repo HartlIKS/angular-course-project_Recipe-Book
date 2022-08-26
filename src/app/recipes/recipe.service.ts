@@ -40,4 +40,9 @@ export class RecipeBook {
         this.recipes.splice(this._selectedIndex, 1);
         this.deselect();
     }
+
+    load(recipes: Recipe[]): void {
+        this.recipes.splice(0, this.recipes.length);
+        this.recipes.push(...recipes);
+    }
 }

@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { ObjectUnsubscribedError } from "rxjs";
 import { IngredientVolume } from "./ingredientvolume.model";
 
 function mappingFunc<A, B>(kv: [A, B]): { name: A, amount: B } {
@@ -43,6 +44,15 @@ export class ShoppingListService {
     public removeAll(items: string[]): void {
         for(let item of items) {
             this.singleRemove(item);
+        }
+    }
+
+    public load(items: { [item: string]: IngredientVolume }): void {
+        for(let key in this.items) {
+            delete this.items[key];
+        }
+        for(let kv of Object.entries(items)) {
+            this.items[kv[0]] = kv[1];
         }
     }
 }

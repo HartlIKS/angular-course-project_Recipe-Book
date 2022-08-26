@@ -1,11 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { StorageComponent } from '../storage/storage.component';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
   @Output() currentPageChange = new EventEmitter<string>();
   _currentPage: string;
   @Input() get currentPage(): string {
@@ -18,8 +19,10 @@ export class HeaderComponent implements OnInit {
 
   @Input() tabs: { [property: string]: string };
 
-  constructor() { }
+  @ViewChild(StorageComponent, {
+    static: false,
+    read: StorageComponent
+  }) storage: StorageComponent;
 
-  ngOnInit(): void {
-  }
+  constructor() { }
 }

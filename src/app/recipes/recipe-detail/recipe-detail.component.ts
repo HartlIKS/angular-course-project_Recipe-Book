@@ -1,6 +1,4 @@
-import { Component, Input } from '@angular/core';
-import { ShoppingListService } from 'src/app/shopping-list/shopping-list.service';
-import { Recipe } from '../recipe.model';
+import { Component } from '@angular/core';
 import { RecipeBook } from '../recipe.service';
 
 @Component({

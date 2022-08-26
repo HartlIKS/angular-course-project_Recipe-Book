@@ -1,6 +1,4 @@
-import { Component, Output, EventEmitter } from '@angular/core';
-import { IngredientVolume } from 'src/app/shopping-list/ingredientvolume.model';
-import { Recipe } from '../recipe.model';
+import { Component } from '@angular/core';
 import { RecipeBook } from '../recipe.service';
 
 @Component({

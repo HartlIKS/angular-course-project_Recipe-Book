@@ -10,6 +10,7 @@ export class RecipeBook {
     get recipes() {
         return this._recipes;
     }
+    private _selectedIndex: number;
     private _selectedRecipe: Recipe = null;
     get selectedRecipe() {
         return this._selectedRecipe;
@@ -18,10 +19,12 @@ export class RecipeBook {
     constructor(private shoppingList: ShoppingListService) {}
 
     select(index: number): void {
+        this._selectedIndex = index;
         this._selectedRecipe = this.recipes[index];
     }
 
     deselect(): void {
+        this._selectedIndex = null;
         this._selectedRecipe = null;
     }
 
@@ -30,6 +33,11 @@ export class RecipeBook {
     }
 
     newRecipe(): void {
-        this.recipes.push(new Recipe());
+        this.select(this.recipes.push(new Recipe())-1);
+    }
+
+    deleteSelected(): void {
+        this.recipes.splice(this._selectedIndex, 1);
+        this.deselect();
     }
 }

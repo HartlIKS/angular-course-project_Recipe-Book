@@ -3,32 +3,32 @@
         <div class="media" style="overflow: visible">
             <div class="media-left">
                 <div class="btn-group dropdown" appDropdown>
-                    <button class="btn btn-primary dropdown-toggle" [disabled]="!recipe">Manage <span
+                    <button class="btn btn-primary dropdown-toggle" [disabled]="!recipeBook.selectedRecipe">Manage <span
                             class="caret"></span></button>
                     <ul class="dropdown-menu">
-                        <li><a href="#" (click)="addIngredients()">Add to shopping List</a></li>
+                        <li><a href="#" (click)="recipeBook.addIngredientsToShoppingList()">Add to shopping List</a></li>
                         <li><a href="#">Edit</a></li>
                         <li><a href="#">Delete</a></li>
                     </ul>
                 </div>
             </div>
             <strong class="text-center media-body" style="font-size: 20px; vertical-align: middle;">
-                {{recipe?.name}}
+                {{recipeBook.selectedRecipe?.name}}
             </strong>
         </div>
     </div>
     <div class="panel-body media">
-        <img [src]="recipe?.imagePath" class="media-body thumbnail recipe-image">
+        <img [src]="recipeBook.selectedRecipe?.imagePath" class="media-body thumbnail recipe-image">
         <div class="media-bottom">
             <ul class="list-group">
-                <li class="list-group-item" *ngFor="let ingredient of (recipe?.ingredients || {}) | keyvalue">
+                <li class="list-group-item" *ngFor="let ingredient of (recipeBook.selectedRecipe?.ingredients || {}) | keyvalue">
                     <span class="list-group-item-heading col-xs-1">
                         {{ingredient.value.amount}}{{ingredient.value.unit}}
                     </span>
                     <span class="list-group-item-text">{{ingredient.key}}</span>
                 </li>
             </ul>
-            <p *ngFor="let line of (recipe?.preparation?.split('\n') || [])">{{line}}</p>
+            <p *ngFor="let line of (recipeBook.selectedRecipe?.preparation?.split('\n') || [])">{{line}}</p>
         </div>
     </div>
 </div>

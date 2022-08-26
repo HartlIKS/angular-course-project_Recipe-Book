@@ -5,6 +5,6 @@ export class Recipe {
         public name : string = "Unnamed Recipe",
         public imagePath : string = "",
         public preparation : string = "Enter preparation steps here",
-        public ingredients: {[property: string]: IngredientVolume} = {}
+        public ingredients: { name: string, amount: IngredientVolume }[] = []
         ) {}
 }

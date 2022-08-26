@@ -22,11 +22,11 @@ export class ShoppingListService {
         this.singleAdd(item, amount);
     }
 
-    public addAll(items: { [item: string]: IngredientVolume }): void {
-        this.addAllArray(Object.entries(items).map(mappingFunc));
+    public addAllMap(items: { [item: string]: IngredientVolume }): void {
+        this.addAll(Object.entries(items).map(mappingFunc));
     }
 
-    public addAllArray(items: { name: string, amount: IngredientVolume }[]): void {
+    public addAll(items: { name: string, amount: IngredientVolume }[]): void {
         for (let item of items) {
             this.singleAdd(item.name, item.amount);
         }

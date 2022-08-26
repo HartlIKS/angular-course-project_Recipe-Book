@@ -19,8 +19,4 @@ export class RecipesComponent implements OnInit {
   public onSelectionChange(event: Recipe): void {
     this.selectedRecipe = event;
   }
-
-  handleAddToShoppingList(ingredients: {[property: string]: IngredientVolume}): void {
-    this.addToShoppingList.emit(ingredients);
-  }
 }

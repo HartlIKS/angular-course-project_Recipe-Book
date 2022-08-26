@@ -1,33 +1,34 @@
-<div class="row">
-    <div class="col-xs-12">
-        <h1>{{recipe?.name}}</h1>
-    </div>
-</div>
-<div class="row">
-    <div class="col-xs-12">
-        <img [src]="recipe?.imagePath" class="img-responsive thumbnail">
-    </div>
-</div>
-<div class="row">
-    <div class="col-xs-12">
-        <div class="btn-group">
-            <button class="btn btn-primary dropdown-toggle" [disabled]="!recipe">Manage<span class="caret"></span></button>
-            <ul class="dropdown-menu">
-                <li><button class="btn btn-success" [disabled]="!recipe" (click)="addIngredients()">Add to shopping List</button></li>
-                <li><button class="btn" [disabled]="!recipe">Edit</button></li>
-                <li><button class="btn btn-danger" [disabled]="!recipe">Delete</button></li>
-            </ul>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <div class="media" style="overflow: visible">
+            <div class="media-left">
+                <div class="btn-group dropdown" appDropdown>
+                    <button class="btn btn-primary dropdown-toggle" [disabled]="!recipe">Manage <span
+                            class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#" (click)="addIngredients()">Add to shopping List</a></li>
+                        <li><a href="#">Edit</a></li>
+                        <li><a href="#">Delete</a></li>
+                    </ul>
+                </div>
+            </div>
+            <strong class="text-center media-body" style="font-size: 20px; vertical-align: middle;">
+                {{recipe?.name}}
+            </strong>
         </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-xs-12">
-        <p *ngFor="let ingredient of (recipe?.ingredients || {}) | keyvalue">{{ingredient.value.amount}}{{ingredient.value.unit}}
-            {{ingredient.key}}</p>
-    </div>
-</div>
-<div class="row">
-    <div class="col-xs-12">
-        <p *ngFor="let line of (recipe?.preparation?.split('\n') || [])">{{line}}</p>
+    <div class="panel-body media">
+        <img [src]="recipe?.imagePath" class="media-body thumbnail recipe-image">
+        <div class="media-bottom">
+            <ul class="list-group">
+                <li class="list-group-item" *ngFor="let ingredient of (recipe?.ingredients || {}) | keyvalue">
+                    <span class="list-group-item-heading col-xs-1">
+                        {{ingredient.value.amount}}{{ingredient.value.unit}}
+                    </span>
+                    <span class="list-group-item-text">{{ingredient.key}}</span>
+                </li>
+            </ul>
+            <p *ngFor="let line of (recipe?.preparation?.split('\n') || [])">{{line}}</p>
+        </div>
     </div>
 </div>

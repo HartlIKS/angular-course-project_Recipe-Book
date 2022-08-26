@@ -10,15 +10,9 @@ import { KeyValuePipe } from '@angular/common';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  page: string;
-  @ViewChild(ShoppingListComponent, {read:ShoppingListComponent, static:false}) shoppingList: ShoppingListComponent;
-
-  addToShoppingList(ingredients: {[property: string]: IngredientVolume}): void {
-    for(let keyval of Object.entries(ingredients)) {
-      this.shoppingList.onAddIngredient({
-        name: keyval[0],
-        amount: keyval[1]
-      });
-    }
-  }
+  tabs: { [id: string]: string } = {
+    'recipes': 'Recipes',
+    'shopping': 'Shopping List'
+  };
+  page: string = Object.keys(this.tabs)[0];
 }

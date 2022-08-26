@@ -1,51 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 import { IngredientVolume, UnitMismatch } from './ingredientvolume.model';
+import { ShoppingListService } from './shopping-list.service';
 
 @Component({
   selector: 'app-shopping-list',
   templateUrl: './shopping-list.component.html',
   styleUrls: ['./shopping-list.component.css']
 })
-export class ShoppingListComponent implements OnInit {
-  ingredients: { [property: string]: IngredientVolume } = {};
+export class ShoppingListComponent {
   selectedIngredient: { name: string, amount: IngredientVolume } = null;
   unitError: UnitMismatch = null;
 
-  constructor() { }
+  constructor(public shoppingList:ShoppingListService, private changeDetector: ChangeDetectorRef) { }
 
-  ngOnInit(): void {
-  }
-
-  public onAddIngredient(event: { name: string, amount: IngredientVolume }): void {
-    if (this.ingredients[event.name]) {
-      if (this.ingredients[event.name].unit != event.amount.unit) {
-        this.unitError = new UnitMismatch(this.ingredients[event.name].unit, event.amount.unit);
-      } else {
-        this.ingredients[event.name].amount += event.amount.amount;
-      }
-    } else {
-      this.ingredients[event.name] = event.amount;
-    }
-  }
-
-  public onChangeIngredientAmount(event: { name: string, amount: IngredientVolume }): void {
-    this.ingredients[event.name] = event.amount;
-    this.selectedIngredient = null;
-  }
-
-  public onDeleteIngredient(event: string): void {
-    delete this.ingredients[event];
+  public deselectIngredient(): void {
     this.selectedIngredient = null;
   }
 
   public selectIngredient(ingredient: string) {
     this.selectedIngredient = {
       name: ingredient,
-      amount: this.ingredients[ingredient]
+      amount: this.shoppingList.items[ingredient]
     };
-  }
-
-  public getUnit(ingredient: string): string {
-    return this.ingredients[ingredient]?.unit;
   }
 }

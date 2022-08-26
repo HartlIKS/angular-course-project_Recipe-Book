@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { IngredientVolume } from 'src/app/shopping-list/ingredientvolume.model';
+import { IngredientVolume, units } from 'src/app/shopping-list/ingredientvolume.model';
 import { Recipe } from '../recipe.model';
 
 @Component({
@@ -8,22 +8,18 @@ import { Recipe } from '../recipe.model';
   styleUrls: ['./recipe-list.component.css']
 })
 export class RecipeListComponent implements OnInit {
-  recipes: Recipe[] = [];
-  selected: Recipe = null;
+  recipes: Recipe[] = [new Recipe("Ratatouille", "https://img.jamieoliver.com/jamieoliver/recipe-database/oldImages/large/1571_2_1437661403.jpg?tr=w-800,h-1066", "bla")];
   @Output() selectionChange = new EventEmitter<Recipe>();
 
 
   constructor() {
-    let r = new Recipe("Ratatouille", "https://img.jamieoliver.com/jamieoliver/recipe-database/oldImages/large/1571_2_1437661403.jpg?tr=w-800,h-1066", "bla");
-    r.ingredients["Aubergine"]=new IngredientVolume(1, "");
-    this.recipes = [r];
+    this.recipes[0].ingredients["Aubergine"]=new IngredientVolume(1, "");
   }
 
   ngOnInit(): void {
   }
 
   public selectRecipe(index:number): void {
-    this.selected = this.recipes[index] || null;
-    this.selectionChange.emit(this.selected);
+    this.selectionChange.emit(this.recipes[index] || null);
   }
 }

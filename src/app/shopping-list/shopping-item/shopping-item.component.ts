@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { IngredientVolume } from '../ingredientvolume.model';
 
 @Component({
@@ -6,13 +6,7 @@ import { IngredientVolume } from '../ingredientvolume.model';
   templateUrl: './shopping-item.component.html',
   styleUrls: ['./shopping-item.component.css']
 })
-export class ShoppingItemComponent implements OnInit {
+export class ShoppingItemComponent {
   @Input() ingredient: string;
   @Input() amount: IngredientVolume;
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
 }

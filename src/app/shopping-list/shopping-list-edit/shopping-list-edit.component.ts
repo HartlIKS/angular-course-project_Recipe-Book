@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { IngredientVolume, UnitMismatch, units } from '../ingredientvolume.model';
 import { ShoppingListService } from '../shopping-list.service';
 
@@ -7,8 +7,8 @@ import { ShoppingListService } from '../shopping-list.service';
   templateUrl: './shopping-list-edit.component.html',
   styleUrls: ['./shopping-list-edit.component.css']
 })
-export class ShoppingListEditComponent implements OnInit {
-  _ingredient: { name: string, amount: IngredientVolume } = null;
+export class ShoppingListEditComponent {
+  private _ingredient: { name: string, amount: IngredientVolume } = null;
   get ingredient() {
     if(!this._ingredient) this._ingredient = {name: "", amount: new IngredientVolume(1, "")};
     return this._ingredient;
@@ -19,27 +19,27 @@ export class ShoppingListEditComponent implements OnInit {
   }
   isEditing: boolean;
 
+  unitError: UnitMismatch = null;
+
   units = units;
-
-  @Input() unitError: UnitMismatch = null;
-
-  @Output() onAdd = new EventEmitter<{ name: string, amount: IngredientVolume }>();
-  @Output() onSet = new EventEmitter<{ name: string, amount: IngredientVolume }>();
-  @Output() onDelete = new EventEmitter<string>();
 
   constructor(private shoppingList:ShoppingListService) { }
 
-  ngOnInit(): void {
-  }
-
   public onSubmit(): void {
-    if (this.isEditing) {
-      this.onSet.emit(this.ingredient);
+    if (!this.isEditing) {
+      try{
+        this.shoppingList.add(this.ingredient.name, this.ingredient.amount);
+        this.clearForm();
+      } catch(error) {
+        if(error instanceof UnitMismatch) {
+          this.unitError = error;
+        } else {
+          throw error;
+        }
+      }
     } else {
-      this.shoppingList.add(this.ingredient.name, this.ingredient.amount);
-      this.onAdd.emit(this.ingredient);
+      this.clearForm();
     }
-    this.clearForm();
   }
 
   public clearForm(): void {
@@ -50,7 +50,6 @@ export class ShoppingListEditComponent implements OnInit {
   public onDeleteClicked(): void {
     if (this.isEditing) {
       this.shoppingList.remove(this.ingredient.name);
-      this.onDelete.emit(this.ingredient.name);
     }
     this.clearForm();
   }

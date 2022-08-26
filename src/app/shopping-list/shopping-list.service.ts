@@ -1,5 +1,4 @@
-import { ChangeDetectorRef, Injectable } from "@angular/core";
-import { BehaviorSubject, Subject } from "rxjs";
+import { Injectable } from "@angular/core";
 import { IngredientVolume } from "./ingredientvolume.model";
 
 function mappingFunc<A, B>(kv: [A, B]): { name: A, amount: B } {

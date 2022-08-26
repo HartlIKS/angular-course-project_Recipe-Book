@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostBinding, HostListener, Input, Renderer2 } from '@angular/core';
+import { Directive, HostBinding, HostListener } from '@angular/core';
 
 @Directive({
   selector: '[appDropdown]'
@@ -6,10 +6,7 @@ import { Directive, ElementRef, HostBinding, HostListener, Input, Renderer2 } fr
 export class DropdownDirective {
   @HostBinding('class.open') foldout: boolean = false;
 
-  constructor() { }
-
   @HostListener('click') public onClick(): void {
     this.foldout = ! this.foldout;
   }
-
 }

@@ -48,9 +48,9 @@ export class Unit {
 
 export const units: { [unit: string]: Unit } = {
     "kg": new Unit("kg", 1),
-    "g": new Unit("kg", 0.001),
+    "g": new Unit("kg", 1000),
     "l": new Unit("l", 1),
-    "ml": new Unit("l", 0.001)
+    "ml": new Unit("l", 1000)
 };
 
 export class UnitMismatch {

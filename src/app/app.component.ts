@@ -1,8 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
-import { RecipeDetailComponent } from './recipes/recipe-detail/recipe-detail.component';
-import { ShoppingListComponent } from './shopping-list/shopping-list.component';
-import { IngredientVolume } from './shopping-list/ingredientvolume.model';
-import { KeyValuePipe } from '@angular/common';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',

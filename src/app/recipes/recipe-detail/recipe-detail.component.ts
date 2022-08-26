@@ -1,5 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { IngredientVolume } from 'src/app/shopping-list/ingredientvolume.model';
+import { Component, Input } from '@angular/core';
 import { ShoppingListService } from 'src/app/shopping-list/shopping-list.service';
 import { Recipe } from '../recipe.model';
 
@@ -8,13 +7,10 @@ import { Recipe } from '../recipe.model';
   templateUrl: './recipe-detail.component.html',
   styleUrls: ['./recipe-detail.component.css']
 })
-export class RecipeDetailComponent implements OnInit {
+export class RecipeDetailComponent {
   @Input() recipe : Recipe;
 
   constructor(private shoppingList:ShoppingListService) { }
-
-  ngOnInit(): void {
-  }
 
   addIngredients(): void {
     this.shoppingList.addAll(this.recipe.ingredients);

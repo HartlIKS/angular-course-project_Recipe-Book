@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { IngredientVolume, UnitMismatch, units } from '../shopping-list/ingredientvolume.model';
-import { ShoppingListService } from '../shopping-list/shopping-list.service';
+import { IngredientVolume, UnitMismatch, units } from '../ingredientvolume.model';
+import { ShoppingListService } from '../shopping-list.service';
 
 @Component({
   selector: 'app-shopping-list-edit',

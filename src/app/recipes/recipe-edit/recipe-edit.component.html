@@ -1,0 +1,25 @@
+<form class="panel panel-default">
+    <div class="panel-heading">
+        <input type="text" class="form-control" name="recipeName" [(ngModel)]="currentRecipe.name">
+    </div>
+    <div class="panel-body media">
+        <input type="text" name="recipeImage" placeholder="Image URL" class="form-control"
+            [(ngModel)]="currentRecipe.imagePath">
+        <div class="media-bottom">
+            <ul class="list-group">
+                <li class="list-group-item" *ngFor="let ingredient of currentRecipe.ingredients; let i = index">
+                    <input type="number" name="amount.{{i}}" class="form-control" min="1"
+                        [(ngModel)]="ingredient.amount.amount">
+                    <select name="unit" name="unit.{{i}}" class="form-control" [(ngModel)]="ingredient.amount.unit">
+                        <option value="">Count</option>
+                        <option *ngFor="let unit of units | keyvalue" [value]="unit.key">{{unit.key}}</option>
+                    </select>
+                    <input type="text" name="ingredient.{{i}}" class="form-control" [(ngModel)]="ingredient.name">
+                </li>
+            </ul>
+            <button class="btn btn-default" (click)="newIngredient()">Add Ingredient</button>
+            <textarea name="preparation" class="form-control" [(ngModel)]="currentRecipe.preparation"></textarea>
+            <button class="btn btn-primary" routerLink="..">Save</button>
+        </div>
+    </div>
+</form>

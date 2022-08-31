@@ -3,6 +3,7 @@ import { BehaviorSubject } from "rxjs";
 import { ShoppingListService } from "../shopping-list/shopping-list.service";
 import { convertRecipe, Recipe } from "./recipe.model";
 import { IngredientVolume } from "../shopping-list/ingredientvolume.model";
+import { Router } from "@angular/router";
 
 @Injectable({
     providedIn: "root"
@@ -15,39 +16,22 @@ export class RecipeBook {
     getCurrentRecipes(): Recipe[] {
         return this.recipeSubject.value;
     }
-    private _selectedIndex: number;
-    private selectedSubject = new BehaviorSubject<Recipe>(null);
-    get selectedRecipe$() {
-        return this.selectedSubject.asObservable();
-    }
 
-    constructor(private shoppingList: ShoppingListService) {}
+    constructor(private shoppingList: ShoppingListService, private router: Router) {}
 
-    select(index: number): void {
-        this._selectedIndex = index;
-        this.selectedSubject.next(this.recipeSubject.value[index]);
-    }
-
-    deselect(): void {
-        this._selectedIndex = null;
-        this.selectedSubject.next(null);
-    }
-
-    addIngredientsToShoppingList(): void {
-        this.shoppingList.addAll(this.selectedSubject.value.ingredients);
+    addIngredientsToShoppingList(recipe: Recipe): void {
+        this.shoppingList.addAll(recipe.ingredients);
     }
 
     newRecipe(): void {
-        this.select(this.recipeSubject.value.push(new Recipe())-1);
+        this.router.navigate(["/recipes", this.recipeSubject.value.push(new Recipe())-1, "edit"]);
     }
 
-    deleteSelected(): void {
-        this.recipeSubject.value.splice(this._selectedIndex, 1);
-        this.deselect();
+    delete(recipe: Recipe): void {
+        this.recipeSubject.value.splice(this.recipeSubject.value.indexOf(recipe), 1);
     }
 
     load(recipes: (Recipe|{name: string, imagePath: string, preparation: string, ingredients: {name: string, amount:IngredientVolume|{amount:number, unit:string}}[]})[]): void {
-        this.deselect();
         this.recipeSubject.next(recipes.map(convertRecipe));
     }
 }

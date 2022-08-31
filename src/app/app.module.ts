@@ -14,12 +14,19 @@ import { ShoppingItemComponent } from './shopping-list/shopping-item/shopping-it
 import { DropdownDirective } from './dropdown.directive';
 import { StorageComponent } from './storage/storage.component';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './home/home.component';
+import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
 
 const appRoutes: Routes = [
-  {path:"shoppingList", component: ShoppingListComponent},
-  {path:"recipes", component: RecipesComponent},
-  {path:"", component: HomeComponent}
+  { path: "shoppingList", component: ShoppingListComponent },
+  {
+    path: "recipes", component: RecipesComponent, children: [
+      { path: ":id", component: RecipeDetailComponent },
+      { path: ":id/edit", component: RecipeEditComponent },
+      { path: ":id/**", redirectTo: ":id" }
+    ]
+  },
+  { path: "", pathMatch: "full", redirectTo: "recipes" },
+  { path: "**", redirectTo: "recipes" }
 ];
 
 @NgModule({
@@ -34,7 +41,8 @@ const appRoutes: Routes = [
     RecipesComponent,
     ShoppingItemComponent,
     DropdownDirective,
-    StorageComponent
+    StorageComponent,
+    RecipeEditComponent
   ],
   imports: [
     BrowserModule,

@@ -1,16 +1,17 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { IngredientVolume, units } from 'src/app/shopping-list/ingredientvolume.model';
 import { Recipe } from '../recipe.model';
 import { RecipeBook } from '../recipe.service';
+import { IngredientVolume, units } from 'src/app/shopping-list/ingredientvolume.model';
 
 @Component({
-  selector: 'app-recipe-detail',
-  templateUrl: './recipe-detail.component.html',
-  styleUrls: ['./recipe-detail.component.css']
+  selector: 'app-recipe-edit',
+  templateUrl: './recipe-edit.component.html',
+  styleUrls: ['./recipe-edit.component.css']
 })
-export class RecipeDetailComponent implements OnInit, OnDestroy {
+export class RecipeEditComponent implements OnInit {
+  units = units;
   private recipes: Recipe[];
   private id: number;
   currentRecipe: Recipe;
@@ -41,5 +42,9 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
     for (let sub of this.subs) {
       sub.unsubscribe();
     }
+  }
+
+  newIngredient(): void {
+    this.currentRecipe.ingredients.push({ name: "New Ingredient", amount: new IngredientVolume(1, "") });
   }
 }

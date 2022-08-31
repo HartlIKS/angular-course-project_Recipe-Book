@@ -1,59 +1,32 @@
-<ng-template [ngIf]="currentRecipe">
-    <div *ngIf="!editing" class="panel panel-default">
-        <div class="panel-heading">
-            <div class="media">
-                <div class="media-left">
-                    <div class="btn-group" style="display: inline-flex">
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <div class="media">
+            <div class="media-left">
+                <div class="btn-group" style="display: inline-flex">
                     <button class="btn btn-success glyphicon glyphicon-th-list"
-                        (click)="recipeBook.addIngredientsToShoppingList()"></button>
-                    <button class="btn btn-primary glyphicon glyphicon-pencil" (click)="editing = true"></button>
+                        (click)="recipeBook.addIngredientsToShoppingList(currentRecipe)"></button>
+                    <button class="btn btn-primary glyphicon glyphicon-pencil" routerLink="edit"></button>
                     <button class="btn btn-danger glyphicon glyphicon-remove"
-                        (click)="recipeBook.deleteSelected()"></button>
-                    </div>
+                        (click)="recipeBook.delete(currentRecipe)"></button>
                 </div>
-                <strong class="text-center media-body" style="font-size: 20px; vertical-align: middle;">
-                    {{currentRecipe.name}}
-                </strong>
             </div>
-        </div>
-        <div class="panel-body media">
-            <img [src]="currentRecipe.imagePath" class="media-body img-responsive thumbnail recipe-image">
-            <div class="media-bottom">
-                <ul class="list-group">
-                    <li class="list-group-item" *ngFor="let ingredient of currentRecipe.ingredients">
-                        <span class="list-group-item-heading col-xs-1">
-                            {{ingredient.amount.amount}}{{ingredient.amount.unit}}
-                        </span>
-                        <span class="list-group-item-text">{{ingredient.name}}</span>
-                    </li>
-                </ul>
-                <p *ngFor="let line of currentRecipe.preparation.split('\n')">{{line}}</p>
-            </div>
+            <strong class="text-center media-body" style="font-size: 20px; vertical-align: middle;">
+                {{currentRecipe.name}}
+            </strong>
         </div>
     </div>
-    <form *ngIf="editing" class="panel panel-default">
-        <div class="panel-heading">
-            <input type="text" class="form-control" name="recipeName" [(ngModel)]="currentRecipe.name">
+    <div class="panel-body media">
+        <img [src]="currentRecipe.imagePath" class="media-body img-responsive thumbnail recipe-image">
+        <div class="media-bottom">
+            <ul class="list-group">
+                <li class="list-group-item" *ngFor="let ingredient of currentRecipe.ingredients">
+                    <span class="list-group-item-heading col-xs-1">
+                        {{ingredient.amount.amount}}{{ingredient.amount.unit}}
+                    </span>
+                    <span class="list-group-item-text">{{ingredient.name}}</span>
+                </li>
+            </ul>
+            <p *ngFor="let line of currentRecipe.preparation.split('\n')">{{line}}</p>
         </div>
-        <div class="panel-body media">
-            <input type="text" name="recipeImage" placeholder="Image URL" class="form-control"
-                [(ngModel)]="currentRecipe.imagePath">
-            <div class="media-bottom">
-                <ul class="list-group">
-                    <li class="list-group-item" *ngFor="let ingredient of currentRecipe.ingredients; let i = index">
-                        <input type="number" name="amount.{{i}}" class="form-control" min="1"
-                            [(ngModel)]="ingredient.amount.amount">
-                        <select name="unit" name="unit.{{i}}" class="form-control" [(ngModel)]="ingredient.amount.unit">
-                            <option value="">Count</option>
-                            <option *ngFor="let unit of units | keyvalue" [value]="unit.key">{{unit.key}}</option>
-                        </select>
-                        <input type="text" name="ingredient.{{i}}" class="form-control" [(ngModel)]="ingredient.name">
-                    </li>
-                </ul>
-                <button class="btn btn-default" (click)="newIngredient()">Add Ingredient</button>
-                <textarea name="preparation" class="form-control" [(ngModel)]="currentRecipe.preparation"></textarea>
-                <button class="btn btn-primary" (click)="editing=false">Save</button>
-            </div>
-        </div>
-    </form>
-</ng-template>
+    </div>
+</div>

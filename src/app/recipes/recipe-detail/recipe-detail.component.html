@@ -4,10 +4,10 @@
             <div class="media-left">
                 <div class="btn-group" style="display: inline-flex">
                     <button class="btn btn-success glyphicon glyphicon-th-list"
-                        (click)="recipeBook.addIngredientsToShoppingList(currentRecipe)"></button>
+                        (click)="addIngredientsToShoppingList()"></button>
                     <button class="btn btn-primary glyphicon glyphicon-pencil" routerLink="edit"></button>
                     <button class="btn btn-danger glyphicon glyphicon-remove"
-                        (click)="recipeBook.delete(currentRecipe)"></button>
+                        (click)="delete()"></button>
                 </div>
             </div>
             <strong class="text-center media-body" style="font-size: 20px; vertical-align: middle;">

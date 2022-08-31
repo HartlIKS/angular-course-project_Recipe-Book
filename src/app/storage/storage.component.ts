@@ -14,9 +14,10 @@ export class StorageComponent {
   constructor(private recipeBook: RecipeBook, private shoppingList: ShoppingListService) {}
 
   load(): void {
-    let fileSelector: HTMLInputElement = this.fileSelector.nativeElement;
-    fileSelector.click();
-    let files = fileSelector.files;
+    this.fileSelector.nativeElement.click();
+  }
+
+  loadFile(files : FileList) {
     if(files.length == 1) {
       files[0]
       .text()
@@ -27,11 +28,12 @@ export class StorageComponent {
       });
     }
   }
+
   save(): void {
     let blob = new Blob([
       JSON.stringify({
-        recipes: this.recipeBook.recipes,
-        shoppingList: this.shoppingList.items
+        recipes: this.recipeBook.getCurrentRecipes(),
+        shoppingList: this.shoppingList.getCurrentItems()
       })
     ], {
       type: "application/json"

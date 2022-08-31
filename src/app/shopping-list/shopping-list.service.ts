@@ -1,21 +1,25 @@
 import { Injectable } from "@angular/core";
-import { ObjectUnsubscribedError } from "rxjs";
-import { IngredientVolume } from "./ingredientvolume.model";
+import { ObjectUnsubscribedError, BehaviorSubject } from "rxjs";
+import { IngredientVolume, convertIngredientVolume } from "./ingredientvolume.model";
 
 function mappingFunc<A, B>(kv: [A, B]): { name: A, amount: B } {
     return { name: kv[0], amount: kv[1] };
 }
 
 @Injectable(
-    {providedIn: "root"}
+    { providedIn: "root" }
 )
 export class ShoppingListService {
-    items: { [item: string]: IngredientVolume } = {};
+    private itemSubject = new BehaviorSubject<{ [item: string]: IngredientVolume }>({});
+    get items$() {
+        return this.itemSubject.asObservable();
+    }
+    getCurrentItems
     private singleAdd(item: string, amount: IngredientVolume): void {
-        if(item in this.items) {
-            this.items[item].add(amount);
+        if (item in this.itemSubject.value) {
+            this.itemSubject.value[item].add(amount);
         } else {
-            this.items[item] = amount;
+            this.itemSubject.value[item] = amount;
         }
     }
 
@@ -34,7 +38,7 @@ export class ShoppingListService {
     }
 
     private singleRemove(item: string): void {
-        delete this.items[item];
+        delete this.itemSubject.value[item];
     }
 
     public remove(item: string): void {
@@ -42,17 +46,15 @@ export class ShoppingListService {
     }
 
     public removeAll(items: string[]): void {
-        for(let item of items) {
+        for (let item of items) {
             this.singleRemove(item);
         }
     }
 
-    public load(items: { [item: string]: IngredientVolume }): void {
-        for(let key in this.items) {
-            delete this.items[key];
+    public load(items: { [item: string]: IngredientVolume | { amount: number, unit: string } }): void {
+        for (let item in this.itemSubject.value) {
+            this.itemSubject.value[item] = convertIngredientVolume(this.itemSubject.value[item]);
         }
-        for(let kv of Object.entries(items)) {
-            this.items[kv[0]] = kv[1];
-        }
+        this.itemSubject.next(items as { [item: string]: IngredientVolume });
     }
 }

@@ -18,6 +18,11 @@ export class IngredientVolume {
     }
 }
 
+export function convertIngredientVolume(vol: IngredientVolume|{amount: number, unit: string}): IngredientVolume {
+    if(vol instanceof IngredientVolume) return vol;
+    return new IngredientVolume(vol.amount, vol.unit);
+}
+
 export class Unit {
     public get base() {
         return this._base;

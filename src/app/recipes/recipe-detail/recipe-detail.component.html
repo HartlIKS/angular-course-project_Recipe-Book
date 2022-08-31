@@ -1,4 +1,4 @@
-<ng-template [ngIf]="recipeBook.selectedRecipe">
+<ng-template [ngIf]="currentRecipe">
     <div *ngIf="!editing" class="panel panel-default">
         <div class="panel-heading">
             <div class="media" style="overflow: visible">
@@ -14,36 +14,36 @@
                     </div>
                 </div>
                 <strong class="text-center media-body" style="font-size: 20px; vertical-align: middle;">
-                    {{recipeBook.selectedRecipe.name}}
+                    {{currentRecipe.name}}
                 </strong>
             </div>
         </div>
         <div class="panel-body media">
-            <img [src]="recipeBook.selectedRecipe.imagePath" class="media-body img-responsive thumbnail recipe-image">
+            <img [src]="currentRecipe.imagePath" class="media-body img-responsive thumbnail recipe-image">
             <div class="media-bottom">
                 <ul class="list-group">
                     <li class="list-group-item"
-                        *ngFor="let ingredient of recipeBook.selectedRecipe.ingredients">
+                        *ngFor="let ingredient of currentRecipe.ingredients">
                         <span class="list-group-item-heading col-xs-1">
                             {{ingredient.amount.amount}}{{ingredient.amount.unit}}
                         </span>
                         <span class="list-group-item-text">{{ingredient.name}}</span>
                     </li>
                 </ul>
-                <p *ngFor="let line of recipeBook.selectedRecipe.preparation.split('\n')">{{line}}</p>
+                <p *ngFor="let line of currentRecipe.preparation.split('\n')">{{line}}</p>
             </div>
         </div>
     </div>
     <form *ngIf="editing" class="panel panel-default">
         <div class="panel-heading">
-            <input type="text" class="form-control" name="recipeName" [(ngModel)]="recipeBook.selectedRecipe.name">
+            <input type="text" class="form-control" name="recipeName" [(ngModel)]="currentRecipe.name">
         </div>
         <div class="panel-body media">
-            <input type="text" name="recipeImage" placeholder="Image URL" class="form-control" [(ngModel)]="recipeBook.selectedRecipe.imagePath">
+            <input type="text" name="recipeImage" placeholder="Image URL" class="form-control" [(ngModel)]="currentRecipe.imagePath">
             <div class="media-bottom">
                 <ul class="list-group">
                     <li class="list-group-item"
-                        *ngFor="let ingredient of recipeBook.selectedRecipe.ingredients; let i = index">
+                        *ngFor="let ingredient of currentRecipe.ingredients; let i = index">
                         <input type="number" name="amount.{{i}}" class="form-control" min="1" [(ngModel)]="ingredient.amount.amount">
                         <select name="unit" name="unit.{{i}}" class="form-control"
                             [(ngModel)]="ingredient.amount.unit">
@@ -54,8 +54,8 @@
                     </li>
                 </ul>
                 <button class="btn btn-default" (click)="newIngredient()">Add Ingredient</button>
-                <textarea name="preparation" class="form-control" [(ngModel)]="recipeBook.selectedRecipe.preparation"></textarea>
-                <button class="btn btn-submit" (click)="editing=false">Save</button>
+                <textarea name="preparation" class="form-control" [(ngModel)]="currentRecipe.preparation"></textarea>
+                <button class="btn btn-primary" (click)="editing=false">Save</button>
             </div>
         </div>
     </form>

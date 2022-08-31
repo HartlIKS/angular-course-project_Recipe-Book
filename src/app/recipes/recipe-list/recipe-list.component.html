@@ -1,7 +1,7 @@
 <div>
     <button class="row btn btn-success" style="margin-bottom: 10px;" (click)="recipeBook.newRecipe()">New Recipe</button>
     <ul class="row list-group list-unstyled">
-        <li *ngFor="let recipe of recipeBook.recipes; let i = index" class="list-group-item btn btn-default" (click)="recipeBook.select(i)">
+        <li *ngFor="let recipe of recipes; let i = index" class="list-group-item btn btn-default" (click)="recipeBook.select(i)">
             <app-recipe-item [recipe]="recipe"></app-recipe-item>
         </li>
     </ul>

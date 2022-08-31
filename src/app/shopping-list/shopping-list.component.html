@@ -3,7 +3,7 @@
         <app-shopping-list-edit [editIngredient]="selectedIngredient"></app-shopping-list-edit>
         <hr>
         <ul class="list-group list-unstyled">
-            <li class="list-group-item btn btn-default" (click)="selectIngredient(ingredient.key)" *ngFor="let ingredient of shoppingList.items | keyvalue">
+            <li class="list-group-item btn btn-default" (click)="selectIngredient(ingredient.key)" *ngFor="let ingredient of items | keyvalue">
                 <app-shopping-item [ingredient]="ingredient.key" [amount]="ingredient.value"></app-shopping-item>
             </li>
         </ul>

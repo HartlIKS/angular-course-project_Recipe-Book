@@ -1,48 +1,53 @@
 import { Injectable } from "@angular/core";
+import { BehaviorSubject } from "rxjs";
 import { ShoppingListService } from "../shopping-list/shopping-list.service";
-import { Recipe } from "./recipe.model";
+import { convertRecipe, Recipe } from "./recipe.model";
+import { IngredientVolume } from "../shopping-list/ingredientvolume.model";
 
 @Injectable({
     providedIn: "root"
 })
 export class RecipeBook {
-    private _recipes: Recipe[] = [];
-    get recipes() {
-        return this._recipes;
+    private recipeSubject = new BehaviorSubject<Recipe[]>([]);
+    get recipes$() {
+        return this.recipeSubject.asObservable();
+    }
+    getCurrentRecipes(): Recipe[] {
+        return this.recipeSubject.value;
     }
     private _selectedIndex: number;
-    private _selectedRecipe: Recipe = null;
-    get selectedRecipe() {
-        return this._selectedRecipe;
+    private selectedSubject = new BehaviorSubject<Recipe>(null);
+    get selectedRecipe$() {
+        return this.selectedSubject.asObservable();
     }
 
     constructor(private shoppingList: ShoppingListService) {}
 
     select(index: number): void {
         this._selectedIndex = index;
-        this._selectedRecipe = this.recipes[index];
+        this.selectedSubject.next(this.recipeSubject.value[index]);
     }
 
     deselect(): void {
         this._selectedIndex = null;
-        this._selectedRecipe = null;
+        this.selectedSubject.next(null);
     }
 
     addIngredientsToShoppingList(): void {
-        this.shoppingList.addAll(this.selectedRecipe.ingredients);
+        this.shoppingList.addAll(this.selectedSubject.value.ingredients);
     }
 
     newRecipe(): void {
-        this.select(this.recipes.push(new Recipe())-1);
+        this.select(this.recipeSubject.value.push(new Recipe())-1);
     }
 
     deleteSelected(): void {
-        this.recipes.splice(this._selectedIndex, 1);
+        this.recipeSubject.value.splice(this._selectedIndex, 1);
         this.deselect();
     }
 
-    load(recipes: Recipe[]): void {
-        this.recipes.splice(0, this.recipes.length);
-        this.recipes.push(...recipes);
+    load(recipes: (Recipe|{name: string, imagePath: string, preparation: string, ingredients: {name: string, amount:IngredientVolume|{amount:number, unit:string}}[]})[]): void {
+        this.deselect();
+        this.recipeSubject.next(recipes.map(convertRecipe));
     }
 }

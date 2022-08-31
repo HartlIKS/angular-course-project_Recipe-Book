@@ -1,6 +1,6 @@
 <div class="hidden">
     <form>
-        <input type="file" accept="application/json" #fileSelector>
+        <input type="file" accept="application/json" (input)="loadFile($event.target.files)" #fileSelector>
     </form>
     <a download="recipeBook.json" #downloadInitializer></a>
 </div>

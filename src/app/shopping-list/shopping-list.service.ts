@@ -14,7 +14,9 @@ export class ShoppingListService {
     get items$() {
         return this.itemSubject.asObservable();
     }
-    getCurrentItems
+    getCurrentItems() {
+        return this.itemSubject.value;
+    }
     private singleAdd(item: string, amount: IngredientVolume): void {
         if (item in this.itemSubject.value) {
             this.itemSubject.value[item].add(amount);

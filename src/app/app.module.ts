@@ -15,19 +15,7 @@ import { DropdownDirective } from './dropdown.directive';
 import { StorageComponent } from './storage/storage.component';
 import { RouterModule, Routes } from '@angular/router';
 import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
-
-const appRoutes: Routes = [
-  { path: "shoppingList", component: ShoppingListComponent },
-  {
-    path: "recipes", component: RecipesComponent, children: [
-      { path: ":id", component: RecipeDetailComponent },
-      { path: ":id/edit", component: RecipeEditComponent },
-      { path: ":id/**", redirectTo: ":id" }
-    ]
-  },
-  { path: "", pathMatch: "full", redirectTo: "recipes" },
-  { path: "**", redirectTo: "recipes" }
-];
+import { AppRoutingModule } from './routing.module';
 
 @NgModule({
   declarations: [
@@ -47,7 +35,7 @@ const appRoutes: Routes = [
   imports: [
     BrowserModule,
     FormsModule,
-    RouterModule.forRoot(appRoutes)
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

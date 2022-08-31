@@ -13,6 +13,14 @@ import { RecipesComponent } from './recipes/recipes.component';
 import { ShoppingItemComponent } from './shopping-list/shopping-item/shopping-item.component';
 import { DropdownDirective } from './dropdown.directive';
 import { StorageComponent } from './storage/storage.component';
+import { RouterModule, Routes } from '@angular/router';
+import { HomeComponent } from './home/home.component';
+
+const appRoutes: Routes = [
+  {path:"shoppingList", component: ShoppingListComponent},
+  {path:"recipes", component: RecipesComponent},
+  {path:"", component: HomeComponent}
+];
 
 @NgModule({
   declarations: [
@@ -30,7 +38,8 @@ import { StorageComponent } from './storage/storage.component';
   ],
   imports: [
     BrowserModule,
-    FormsModule
+    FormsModule,
+    RouterModule.forRoot(appRoutes)
   ],
   providers: [],
   bootstrap: [AppComponent]

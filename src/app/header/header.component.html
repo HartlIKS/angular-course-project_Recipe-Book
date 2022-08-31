@@ -1,20 +1,19 @@
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a href="#" class="navbar-brand">Recipe Book</a>
+            <a routerLink="/" class="navbar-brand">Recipe Book</a>
         </div>
         <div class="navbar-default">
             <ul class="nav navbar-nav">
-                <li *ngFor="let tab of tabs | keyvalue">
-                    <a href="#" (click)="currentPage=tab.key">{{tab.value}}</a>
-                </li>
+                <li routerLinkActive="active"><a routerLink="/recipes">Recipes</a></li>
+                <li routerLinkActive="active"><a routerLink="/shoppingList">Shopping List</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown" appDropdown>
-                    <a href="#" class="dropdown-toggle" role="button">Manage<span class="caret"></span></a>
+                    <a class="dropdown-toggle" role="button">Manage<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#" (click)="storage.save()">Save</a></li>
-                        <li><a href="#" (click)="storage.load()">Load</a></li>
+                        <li><a role="button" (click)="storage.save()">Save</a></li>
+                        <li><a role="button" (click)="storage.load()">Load</a></li>
                     </ul>
                 </li>
             </ul>

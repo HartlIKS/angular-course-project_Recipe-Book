@@ -1,16 +1,14 @@
 <ng-template [ngIf]="currentRecipe">
     <div *ngIf="!editing" class="panel panel-default">
         <div class="panel-heading">
-            <div class="media" style="overflow: visible">
+            <div class="media">
                 <div class="media-left">
-                    <div class="btn-group dropdown" appDropdown>
-                        <button class="btn btn-primary dropdown-toggle">Manage <span class="caret"></span></button>
-                        <ul class="dropdown-menu">
-                            <li><a href="#" (click)="recipeBook.addIngredientsToShoppingList()">Add to shopping List</a>
-                            </li>
-                            <li><a href="#" (click)="editing = true">Edit</a></li>
-                            <li><a href="#" (click)="recipeBook.deleteSelected()">Delete</a></li>
-                        </ul>
+                    <div class="btn-group" style="display: inline-flex">
+                    <button class="btn btn-success glyphicon glyphicon-th-list"
+                        (click)="recipeBook.addIngredientsToShoppingList()"></button>
+                    <button class="btn btn-primary glyphicon glyphicon-pencil" (click)="editing = true"></button>
+                    <button class="btn btn-danger glyphicon glyphicon-remove"
+                        (click)="recipeBook.deleteSelected()"></button>
                     </div>
                 </div>
                 <strong class="text-center media-body" style="font-size: 20px; vertical-align: middle;">
@@ -22,8 +20,7 @@
             <img [src]="currentRecipe.imagePath" class="media-body img-responsive thumbnail recipe-image">
             <div class="media-bottom">
                 <ul class="list-group">
-                    <li class="list-group-item"
-                        *ngFor="let ingredient of currentRecipe.ingredients">
+                    <li class="list-group-item" *ngFor="let ingredient of currentRecipe.ingredients">
                         <span class="list-group-item-heading col-xs-1">
                             {{ingredient.amount.amount}}{{ingredient.amount.unit}}
                         </span>
@@ -39,14 +36,14 @@
             <input type="text" class="form-control" name="recipeName" [(ngModel)]="currentRecipe.name">
         </div>
         <div class="panel-body media">
-            <input type="text" name="recipeImage" placeholder="Image URL" class="form-control" [(ngModel)]="currentRecipe.imagePath">
+            <input type="text" name="recipeImage" placeholder="Image URL" class="form-control"
+                [(ngModel)]="currentRecipe.imagePath">
             <div class="media-bottom">
                 <ul class="list-group">
-                    <li class="list-group-item"
-                        *ngFor="let ingredient of currentRecipe.ingredients; let i = index">
-                        <input type="number" name="amount.{{i}}" class="form-control" min="1" [(ngModel)]="ingredient.amount.amount">
-                        <select name="unit" name="unit.{{i}}" class="form-control"
-                            [(ngModel)]="ingredient.amount.unit">
+                    <li class="list-group-item" *ngFor="let ingredient of currentRecipe.ingredients; let i = index">
+                        <input type="number" name="amount.{{i}}" class="form-control" min="1"
+                            [(ngModel)]="ingredient.amount.amount">
+                        <select name="unit" name="unit.{{i}}" class="form-control" [(ngModel)]="ingredient.amount.unit">
                             <option value="">Count</option>
                             <option *ngFor="let unit of units | keyvalue" [value]="unit.key">{{unit.key}}</option>
                         </select>

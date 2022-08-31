@@ -16,6 +16,10 @@ export class IngredientVolume {
             throw new UnitMismatch(this.unit, unit);
         }
     }
+
+    public copy(): IngredientVolume {
+        return new IngredientVolume(this.amount, this.unit);
+    }
 }
 
 export function convertIngredientVolume(vol: IngredientVolume|{amount: number, unit: string}): IngredientVolume {

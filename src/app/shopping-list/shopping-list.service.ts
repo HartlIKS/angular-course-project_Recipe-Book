@@ -19,7 +19,7 @@ export class ShoppingListService {
         if (item in this.itemSubject.value) {
             this.itemSubject.value[item].add(amount);
         } else {
-            this.itemSubject.value[item] = amount;
+            this.itemSubject.value[item] = amount.copy();
         }
     }
 

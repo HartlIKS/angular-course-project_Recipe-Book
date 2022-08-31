@@ -2,14 +2,17 @@
     <div class="col-xs-12">
         <form (ngSubmit)="onSubmit()">
             <div class="row">
-                <div class="col-sm-9 form-group">
+                <div class="col-sm-8 form-group">
                     <label for="name">Name</label>
                     <input type="text" name="name" class="form-control" [disabled]="isEditing"
                         [(ngModel)]="ingredient.name">
                 </div>
-                <div class="form-group col-sm-3">
+                <div class="form-group col-sm-2">
                     <label for="amount">Amount</label>
                     <input type="number" min="1" name="amount" class="form-control" [(ngModel)]="ingredient.amount.amount">
+                </div>
+                <div class="form-group col-sm-2">
+                    <label for="unit">Unit</label>
                     <select name="unit" class="form-control" [disabled]="isEditing"
                         [(ngModel)]="ingredient.amount.unit">
                         <option value="">Count</option>
@@ -19,7 +22,6 @@
                         Cannot convert from<br>{{unitError?.originalUnit}} to {{unitError?.newUnit}}.
                     </div>
                 </div>
-
             </div>
             <div class="row">
                 <div class="col-xs-12">

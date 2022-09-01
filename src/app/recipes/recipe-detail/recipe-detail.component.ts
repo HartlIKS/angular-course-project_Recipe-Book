@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { IngredientVolume, units } from 'src/app/shopping-list/ingredientvolume.model';
 import { Recipe } from '../recipe.model';
 import { RecipeBook } from '../recipe.service';
 

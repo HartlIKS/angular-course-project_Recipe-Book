@@ -1,4 +1,6 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { IngredientVolume, UnitMismatch, units } from '../ingredientvolume.model';
 import { ShoppingListService } from '../shopping-list.service';
 
@@ -7,50 +9,45 @@ import { ShoppingListService } from '../shopping-list.service';
   templateUrl: './shopping-list-edit.component.html',
   styleUrls: ['./shopping-list-edit.component.css']
 })
-export class ShoppingListEditComponent {
-  private _ingredient: { name: string, amount: IngredientVolume } = null;
-  get ingredient() {
-    if(!this._ingredient) this._ingredient = {name: "", amount: new IngredientVolume(1, "")};
-    return this._ingredient;
-  }
-  @Input() set editIngredient(ingredient: {name: string, amount: IngredientVolume}) {
-    this._ingredient = ingredient;
-    this.isEditing = !!ingredient;
-  }
-  isEditing: boolean;
+export class ShoppingListEditComponent implements OnInit, OnDestroy {
+  ingredient: { name: string, amount: IngredientVolume };
 
   unitError: UnitMismatch = null;
 
   units = units;
 
-  constructor(private shoppingList:ShoppingListService) { }
+  private sub: Subscription;
 
-  public onSubmit(): void {
-    if (!this.isEditing) {
-      try{
-        this.shoppingList.add(this.ingredient.name, this.ingredient.amount);
-        this.clearForm();
-      } catch(error) {
-        if(error instanceof UnitMismatch) {
-          this.unitError = error;
-        } else {
-          throw error;
-        }
+  constructor(private shoppingList: ShoppingListService, private route: ActivatedRoute, private router: Router) { }
+
+  ngOnInit(): void {
+    this.ingredient = this.route.snapshot.data.ingredient;
+    this.sub = this.route.data.subscribe(
+      d => {
+        this.ingredient = d.ingredient;
       }
-    } else {
-      this.clearForm();
-    }
+    );
   }
 
-  public clearForm(): void {
-    this._ingredient = null;
-    this.isEditing = false;
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
+  }
+
+  public onUnitChange(event: any) {
+    try{
+      this.ingredient.amount.convertTo(event.target.value);
+      this.unitError = null;
+    } catch(error) {
+      if(error instanceof UnitMismatch) {
+        this.unitError = error;
+      } else {
+        throw error;
+      }
+    }
   }
 
   public onDeleteClicked(): void {
-    if (this.isEditing) {
-      this.shoppingList.remove(this.ingredient.name);
-    }
-    this.clearForm();
+    this.shoppingList.remove(this.ingredient.name);
+    this.router.navigate([".."], {relativeTo: this.route});
   }
 }

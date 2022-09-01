@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { ObjectUnsubscribedError, BehaviorSubject } from "rxjs";
+import { BehaviorSubject } from "rxjs";
 import { IngredientVolume, convertIngredientVolume } from "./ingredientvolume.model";
 
 function mappingFunc<A, B>(kv: [A, B]): { name: A, amount: B } {

@@ -1,9 +1,9 @@
 <div class="row">
     <div class="col-sm-12">
-        <app-shopping-list-edit [editIngredient]="selectedIngredient"></app-shopping-list-edit>
+        <router-outlet></router-outlet>
         <hr>
         <ul class="list-group list-unstyled">
-            <li class="list-group-item btn btn-default" (click)="selectIngredient(ingredient.key)" *ngFor="let ingredient of items | keyvalue">
+            <li class="list-group-item btn btn-default" routerLinkActive="active" [routerLink]="[ingredient.key]" *ngFor="let ingredient of items | keyvalue">
                 <app-shopping-item [ingredient]="ingredient.key" [amount]="ingredient.value"></app-shopping-item>
             </li>
         </ul>

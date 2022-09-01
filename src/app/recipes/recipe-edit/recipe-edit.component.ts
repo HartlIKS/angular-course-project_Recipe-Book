@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Recipe } from '../recipe.model';
-import { RecipeBook } from '../recipe.service';
 import { IngredientVolume, units } from 'src/app/shopping-list/ingredientvolume.model';
 
 @Component({

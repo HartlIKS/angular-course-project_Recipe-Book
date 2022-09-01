@@ -1,4 +1,5 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { RecipeBook } from '../recipes/recipe.service';
 import { ShoppingListService } from '../shopping-list/shopping-list.service';
 
@@ -11,7 +12,7 @@ export class StorageComponent {
   @ViewChild("fileSelector") fileSelector: ElementRef;
   @ViewChild("downloadInitializer") downloadTrigger: ElementRef;
 
-  constructor(private recipeBook: RecipeBook, private shoppingList: ShoppingListService) {}
+  constructor(private recipeBook: RecipeBook, private shoppingList: ShoppingListService, private router: Router) {}
 
   load(): void {
     this.fileSelector.nativeElement.click();
@@ -23,8 +24,10 @@ export class StorageComponent {
       .text()
       .then(JSON.parse)
       .then(parsed => {
-        this.recipeBook.load(parsed.recipes);
-        this.shoppingList.load(parsed.shoppingList);
+        if("recipes" in parsed) this.recipeBook.load(parsed.recipes);
+        if("shoppingList" in parsed) this.shoppingList.load(parsed.shoppingList);
+        if(("recipes" in parsed) || !("shoppingList" in parsed)) this.router.navigate(["/recipes"]);
+        else this.router.navigate(["/shoppingList"]);
       });
     }
   }

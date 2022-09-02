@@ -1,4 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { IngredientVolume, UnitMismatch, units } from '../ingredientvolume.model';
@@ -9,12 +10,14 @@ import { ShoppingListService } from '../shopping-list.service';
   templateUrl: './shopping-list-edit.component.html',
   styleUrls: ['./shopping-list-edit.component.css']
 })
-export class ShoppingListEditComponent implements OnInit, OnDestroy {
+export class ShoppingListEditComponent implements OnInit, OnDestroy, AfterViewInit {
   ingredient: { name: string, amount: IngredientVolume };
 
   unitError: UnitMismatch = null;
 
   units = units;
+
+  @ViewChild('form', {static: true, read: NgForm}) unitForm: NgForm;
 
   private sub: Subscription;
 
@@ -25,17 +28,32 @@ export class ShoppingListEditComponent implements OnInit, OnDestroy {
     this.sub = this.route.data.subscribe(
       d => {
         this.ingredient = d.ingredient;
+        this.unitForm.value.unit = this.ingredient.amount.unit;
+        this.unitForm.value.amount = this.ingredient.amount.amount;
       }
     );
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => this.unitForm.setValue({
+      amount: this.ingredient.amount.amount,
+      unit: this.ingredient.amount.unit
+    }), 0);
   }
 
   ngOnDestroy(): void {
     this.sub.unsubscribe();
   }
 
-  public onUnitChange(event: any) {
+  public onSubmit(form: NgForm) {
+    this.ingredient.amount = form.value.amount;
+    this.router.navigate([".."], {relativeTo: this.route});
+  }
+
+  public onUnitChange(form: NgForm) {
     try{
-      this.ingredient.amount.convertTo(event.target.value);
+      this.ingredient.amount.convertTo(form.value.unit);
+      form.value.amount = this.ingredient.amount;
       this.unitError = null;
     } catch(error) {
       if(error instanceof UnitMismatch) {

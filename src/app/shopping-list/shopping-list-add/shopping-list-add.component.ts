@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { IngredientVolume, UnitMismatch, units } from '../ingredientvolume.model';
 import { ShoppingListService } from '../shopping-list.service';
@@ -9,12 +10,6 @@ import { ShoppingListService } from '../shopping-list.service';
   styleUrls: ['./shopping-list-add.component.css']
 })
 export class ShoppingListAddComponent implements AfterViewInit {
-  private _ingredient: { name: string, amount: IngredientVolume } = null;
-  get ingredient() {
-    if (!this._ingredient) this._ingredient = { name: "", amount: new IngredientVolume(1, "") };
-    return this._ingredient;
-  }
-
   unitError: UnitMismatch = null;
 
   units = units;
@@ -30,10 +25,9 @@ export class ShoppingListAddComponent implements AfterViewInit {
     ;
   }
 
-  public onSubmit(): void {
+  public onSubmit(form: NgForm): void {
       try {
-        this.shoppingList.add(this.ingredient.name, this.ingredient.amount);
-        this._ingredient = null;
+        this.shoppingList.add(form.value.name, new IngredientVolume(form.value.amount, form.value.unit));
         this.resetButton.nativeElement.click();
       } catch (error) {
         if (error instanceof UnitMismatch) {

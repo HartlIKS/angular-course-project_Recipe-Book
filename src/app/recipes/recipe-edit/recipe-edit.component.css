@@ -2,3 +2,6 @@ input.ng-touched.ng-invalid,
 ul.ng-invalid {
     border: 1px solid red;
 }
+input.ng-valid {
+    border: 1px solid green;
+}

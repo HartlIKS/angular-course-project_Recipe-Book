@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Recipe } from '../recipe.model';
+import { RecipeBook } from '../recipe.service';
 import { IngredientVolume, units } from 'src/app/shopping-list/ingredientvolume.model';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 
@@ -31,7 +32,7 @@ export class RecipeEditComponent implements OnInit {
     return this.recipeForm.get("ingredients") as FormArray
   }
 
-  constructor(private route: ActivatedRoute, private router: Router) { }
+  constructor(private recipeBook: RecipeBook, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
     this.currentRecipe = this.route.snapshot.data.recipe;
@@ -84,7 +85,7 @@ export class RecipeEditComponent implements OnInit {
       amount: new IngredientVolume(v.amount, v.unit)
     }));
     this.currentRecipe.preparation = this.recipeForm.value.preparation;
-
-    this.router.navigate([".."], {relativeTo: this.route});
+    if("id" in this.route.snapshot.params) this.router.navigate([".."], {relativeTo: this.route});
+    this.recipeBook.addRecipe(this.currentRecipe);
   }
 }

@@ -23,8 +23,8 @@ export class RecipeBook {
         this.shoppingList.addAll(recipe.ingredients);
     }
 
-    newRecipe(): void {
-        this.router.navigate(["/recipes", this.recipeSubject.value.push(new Recipe())-1, "edit"]);
+    addRecipe(recipe: Recipe) {
+        this.router.navigate(["/recipes", this.recipeSubject.value.push(recipe)-1]);
     }
 
     delete(recipe: Recipe): void {

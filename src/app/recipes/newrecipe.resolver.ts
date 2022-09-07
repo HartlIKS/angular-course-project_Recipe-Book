@@ -11,6 +11,6 @@ export class NewRecipeResolver implements Resolve<Recipe> {
     constructor(private recipeBook: RecipeBook, private router: Router) {}
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Recipe | Observable<Recipe> | Promise<Recipe> {
-        return new Recipe("New Recipe", "", "", []);
+        return new Recipe();
     }
 }

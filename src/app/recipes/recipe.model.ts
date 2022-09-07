@@ -2,9 +2,9 @@ import { IngredientVolume, convertIngredientVolume } from "../shopping-list/ingr
 
 export class Recipe {
     constructor(
-        public name : string = "Unnamed Recipe",
-        public imagePath : string = "",
-        public preparation : string = "Enter preparation steps here",
+        public name : string = null,
+        public imagePath : string = null,
+        public preparation : string = null,
         public ingredients: { name: string, amount: IngredientVolume }[] = []
         ) {}
 }

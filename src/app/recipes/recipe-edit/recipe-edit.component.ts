@@ -36,17 +36,6 @@ export class RecipeEditComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentRecipe = this.route.snapshot.data.recipe;
-    this.sub = this.route.data.subscribe(
-      d => {
-        this.currentRecipe = d.recipe;
-        this.recipeForm.setValue({
-          "recipeName": this.currentRecipe.name,
-          "recipeImage": this.currentRecipe.imagePath,
-          "ingredients": this.currentRecipe.ingredients.map(i => ({"name": i.name, "amount": i.amount.amount, "unit": i.amount.unit})),
-          "preparation": this.currentRecipe.preparation
-        });
-      }
-    );
     this.recipeForm = new FormGroup({
       "recipeName": new FormControl<string>(this.currentRecipe.name, Validators.required),
       "recipeImage": new FormControl<string>(this.currentRecipe.imagePath),
@@ -56,16 +45,27 @@ export class RecipeEditComponent implements OnInit {
           "amount": FormControl<number>,
           "unit": FormControl<string>
         }>
-      >(this.currentRecipe.ingredients.map(v => this.newIngredientFormGroup(v.name, v.amount)), Validators.minLength(1)),
+      >(this.currentRecipe.ingredients?.map(v => this.newIngredientFormGroup(v.name, v.amount)) || [], Validators.required),
       "preparation": new FormControl<string>(this.currentRecipe.preparation, Validators.required)
     });
+    this.sub = this.route.data.subscribe(
+      d => {
+        this.currentRecipe = d.recipe;
+        this.recipeForm.setValue({
+          "recipeName": this.currentRecipe.name,
+          "recipeImage": this.currentRecipe.imagePath,
+          "ingredients": this.currentRecipe.ingredients?.map(i => ({"name": i.name, "amount": i.amount.amount, "unit": i.amount.unit})) || [],
+          "preparation": this.currentRecipe.preparation
+        });
+      }
+    );
   }
 
-  private newIngredientFormGroup(name = "New Ingredient", amount= new IngredientVolume(1, "")) {
+  private newIngredientFormGroup(name?: string, amount?: IngredientVolume) {
     return new FormGroup({
-      "name": new FormControl(name),
-      "amount": new FormControl(amount.amount),
-      "unit": new FormControl(amount.unit)
+      "name": new FormControl(name, Validators.required),
+      "amount": new FormControl(amount?.amount, Validators.min(0)),
+      "unit": new FormControl(amount?.unit, Validators.required)
     });
   }
 

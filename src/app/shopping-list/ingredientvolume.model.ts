@@ -53,6 +53,17 @@ export class Unit {
         if (from !== to) throw new UnitMismatch(from.base, to.base);
         return amount * fromBase / toBase;
     }
+
+    public convertable(from: Unit): boolean {
+        while (units[from.base] !== from) {
+            from = units[from.base];
+        }
+        let to: Unit = this;
+        while (units[to.base] !== to) {
+            to = units[to.base];
+        }
+        return from === to;
+    }
 }
 
 export const units: { [unit: string]: Unit } = {
@@ -61,6 +72,13 @@ export const units: { [unit: string]: Unit } = {
     "l": new Unit("l", 1),
     "ml": new Unit("l", 1000)
 };
+
+export function convertable(from: string, to: string): boolean {
+    if(from == to) return true;
+    if(!(from in units)) return false;
+    if(!(to in units)) return false;
+    return units[to].convertable(units[from]);
+}
 
 export class UnitMismatch {
     constructor(private _originalUnit: string, private _newUnit: string) { }

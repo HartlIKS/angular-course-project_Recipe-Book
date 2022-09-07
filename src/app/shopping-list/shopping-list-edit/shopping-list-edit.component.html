@@ -7,19 +7,17 @@
             </div>
             <div class="form-group col-sm-2">
                 <label for="amount">Amount</label>
-                <input type="number" min="1" name="amount" class="form-control" ngModel="ingredient.amount.amount">
+                <input type="number" min="1" name="amount" required class="form-control"
+                    [ngModel]="ingredient.amount.amount">
             </div>
             <div class="form-group col-sm-2">
                 <label for="unit">Unit</label>
-                <select name="unit" class="form-control" ngModel [value]="ingredient.amount.unit">
-                    <option [selected]="ingredient.amount.unit == ''" value="">Count</option>
-                    <option *ngFor="let unit of units | keyvalue" [value]="unit.key"
-                        [selected]="unit.key == ingredient.amount.unit">{{unit.key}}</option>
+                <select name="unit" class="form-control" (change)="onUnitChange(form)" [ngModel]="ingredient.amount.unit">
+                    <option value="" *ngIf="isConvertable(ingredient.amount.unit, '')">Count</option>
+                    <ng-template ngFor let-unit [ngForOf]="units | keyvalue">
+                        <option *ngIf="isConvertable(ingredient.amount.unit, unit.key)" [value]="unit.key">{{unit.key}}</option>
+                    </ng-template>
                 </select>
-                <div for="unit" class="alert-danger" *ngIf="unitError">
-                    Cannot convert from<br>{{unitError?.originalUnit}} to {{unitError?.newUnit}}.
-                </div>
-                <button class="btn btn-primary" type="button" (click)="onUnitChange(form)">Convert</button>
             </div>
         </div>
         <div class="row">

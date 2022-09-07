@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { IngredientVolume, UnitMismatch, units } from '../ingredientvolume.model';
+import { IngredientVolume, UnitMismatch, units, convertable } from '../ingredientvolume.model';
 import { ShoppingListService } from '../shopping-list.service';
 
 @Component({
@@ -43,6 +43,10 @@ export class ShoppingListEditComponent implements OnInit, OnDestroy, AfterViewIn
 
   ngOnDestroy(): void {
     this.sub.unsubscribe();
+  }
+
+  public isConvertable(from: string, to:string): boolean {
+    return convertable(from, to);
   }
 
   public onSubmit(form: NgForm) {

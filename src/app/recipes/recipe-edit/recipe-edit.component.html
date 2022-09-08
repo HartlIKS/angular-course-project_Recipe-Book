@@ -3,7 +3,8 @@
         <input type="text" class="form-control" formControlName="recipeName">
     </div>
     <div class="panel-body media">
-        <input type="text" formControlName="recipeImage" placeholder="Image URL" class="form-control">
+        <img [src]="image.value" class="media-body img-responsive thumbnail recipe-image">
+        <input type="text" formControlName="recipeImage" placeholder="Image URL" class="form-control" #image>
         <div class="media-bottom">
             <ul class="list-group" formArrayName="ingredients">
                 <li class="list-group-item form-group" [formGroupName]="i"

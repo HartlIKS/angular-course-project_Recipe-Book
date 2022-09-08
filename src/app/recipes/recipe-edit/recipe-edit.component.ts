@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Recipe } from '../recipe.model';
@@ -11,7 +11,7 @@ import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
   templateUrl: './recipe-edit.component.html',
   styleUrls: ['./recipe-edit.component.css']
 })
-export class RecipeEditComponent implements OnInit {
+export class RecipeEditComponent implements OnInit, OnDestroy {
   units = units;
   currentRecipe: Recipe;
   private sub: Subscription;
@@ -32,7 +32,7 @@ export class RecipeEditComponent implements OnInit {
     return this.recipeForm.get("ingredients") as FormArray
   }
 
-  constructor(private recipeBook: RecipeBook, private route: ActivatedRoute, private router: Router) { }
+  constructor(private recipeBook: RecipeBook, private route: ActivatedRoute, private router: Router, private changeDetector: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.currentRecipe = this.route.snapshot.data.recipe;
@@ -57,6 +57,7 @@ export class RecipeEditComponent implements OnInit {
           "ingredients": this.currentRecipe.ingredients?.map(i => ({ "name": i.name, "amount": i.amount.amount, "unit": i.amount.unit })) || [],
           "preparation": this.currentRecipe.preparation
         });
+        this.changeDetector.detectChanges();
       }
     );
   }

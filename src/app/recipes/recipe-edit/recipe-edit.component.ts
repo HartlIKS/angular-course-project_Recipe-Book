@@ -54,7 +54,7 @@ export class RecipeEditComponent implements OnInit {
         this.recipeForm.setValue({
           "recipeName": this.currentRecipe.name,
           "recipeImage": this.currentRecipe.imagePath,
-          "ingredients": this.currentRecipe.ingredients?.map(i => ({"name": i.name, "amount": i.amount.amount, "unit": i.amount.unit})) || [],
+          "ingredients": this.currentRecipe.ingredients?.map(i => ({ "name": i.name, "amount": i.amount.amount, "unit": i.amount.unit })) || [],
           "preparation": this.currentRecipe.preparation
         });
       }
@@ -64,17 +64,22 @@ export class RecipeEditComponent implements OnInit {
   private newIngredientFormGroup(name?: string, amount?: IngredientVolume) {
     return new FormGroup({
       "name": new FormControl(name, Validators.required),
-      "amount": new FormControl(amount?.amount, Validators.min(0)),
+      "amount": new FormControl(amount?.amount, [Validators.required, Validators.min(0)]),
       "unit": new FormControl(amount?.unit, Validators.required)
     });
   }
+
 
   ngOnDestroy(): void {
     this.sub.unsubscribe();
   }
 
   newIngredient(): void {
-    this.ingredients.push(this.newIngredientFormGroup(), {emitEvent: true});
+    this.ingredients.push(this.newIngredientFormGroup(), { emitEvent: true });
+  }
+
+  removeIngredient(index: number): void {
+    this.ingredients.removeAt(index, { emitEvent: true });
   }
 
   onSubmit(): void {
@@ -85,7 +90,7 @@ export class RecipeEditComponent implements OnInit {
       amount: new IngredientVolume(v.amount, v.unit)
     }));
     this.currentRecipe.preparation = this.recipeForm.value.preparation;
-    if("id" in this.route.snapshot.params) this.router.navigate([".."], {relativeTo: this.route});
+    if ("id" in this.route.snapshot.params) this.router.navigate([".."], { relativeTo: this.route });
     this.recipeBook.addRecipe(this.currentRecipe);
   }
 }

@@ -6,16 +6,22 @@
         <input type="text" formControlName="recipeImage" placeholder="Image URL" class="form-control">
         <div class="media-bottom">
             <ul class="list-group" formArrayName="ingredients">
-                <li class="list-group-item" [formGroupName]="i" *ngFor="let ingredient of ingredients.controls; let i = index">
+                <li class="list-group-item form-group" [formGroupName]="i"
+                    *ngFor="let ingredient of ingredients.controls; let i = index">
                     <input type="number" formControlName="amount" class="form-control">
                     <select name="unit" formControlName="unit" class="form-control">
                         <option value="">Count</option>
                         <option *ngFor="let unit of units | keyvalue" [value]="unit.key">{{unit.key}}</option>
                     </select>
                     <input type="text" formControlName="name" class="form-control">
+                    <button type="button" class="btn btn-danger glyphicon glyphicon-remove"
+                        (click)="removeIngredient(i)"></button>
                 </li>
             </ul>
-            <button class="btn btn-default" type="button" (click)="newIngredient()">Add Ingredient</button>
+            <button class="btn" [ngClass]="{
+                'btn-success': ingredients.controls.length == 0,
+                'btn-default': ingredients.controls.length > 0
+            }" type="button" (click)="newIngredient()">Add Ingredient</button>
             <textarea formControlName="preparation" class="form-control"></textarea>
             <button class="btn btn-primary" type="submit" [disabled]="recipeForm.invalid">Save</button>
         </div>

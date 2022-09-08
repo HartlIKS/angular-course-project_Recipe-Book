@@ -24,6 +24,7 @@
             }" type="button" (click)="newIngredient()">Add Ingredient</button>
             <textarea formControlName="preparation" class="form-control"></textarea>
             <button class="btn btn-primary" type="submit" [disabled]="recipeForm.invalid">Save</button>
+            <button class="btn btn-danger" type="button" routerLink="..">Cancel</button>
         </div>
     </div>
 </form>

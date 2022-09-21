@@ -17,7 +17,9 @@ export class RecipeBook {
         return this.recipeSubject.value;
     }
 
-    constructor(private shoppingList: ShoppingListService, private router: Router) {}
+    constructor(private shoppingList: ShoppingListService, private router: Router) {
+        this.loadFromLocalStorage();
+    }
 
     addIngredientsToShoppingList(recipe: Recipe): void {
         this.shoppingList.addAll(recipe.ingredients);
@@ -33,5 +35,13 @@ export class RecipeBook {
 
     load(recipes: (Recipe|{name: string, imagePath: string, preparation: string, ingredients: {name: string, amount:IngredientVolume|{amount:number, unit:string}}[]})[]): void {
         this.recipeSubject.next(recipes.map(convertRecipe));
+    }
+
+    saveToLocalStorage(): void {
+        localStorage.setItem("recipes", JSON.stringify(this.recipeSubject.value));
+    }
+
+    loadFromLocalStorage() {
+        return this.load(JSON.parse(localStorage.getItem("recipes")));
     }
 }

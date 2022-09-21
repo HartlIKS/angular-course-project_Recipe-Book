@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { RecipeBook } from '../recipes/recipe.service';
 import { StorageComponent } from '../storage/storage.component';
 
 @Component({
@@ -24,5 +25,5 @@ export class HeaderComponent {
     read: StorageComponent
   }) storage: StorageComponent;
 
-  constructor() { }
+  constructor(public recipes: RecipeBook) { }
 }

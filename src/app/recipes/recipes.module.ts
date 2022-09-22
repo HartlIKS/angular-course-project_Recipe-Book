@@ -1,11 +1,12 @@
 import { NgModule } from "@angular/core";
 import { ReactiveFormsModule } from "@angular/forms";
 import { BrowserModule } from "@angular/platform-browser";
-import { AppRoutingModule } from "../routing.module";
+import { RouterModule } from "@angular/router";
 import { RecipeDetailComponent } from "./recipe-detail/recipe-detail.component";
 import { RecipeEditComponent } from "./recipe-edit/recipe-edit.component";
 import { RecipeItemComponent } from "./recipe-list/recipe-item/recipe-item.component";
 import { RecipeListComponent } from "./recipe-list/recipe-list.component";
+import { RecipesRoutingModule } from "./recipes-routing.module";
 import { RecipesComponent } from "./recipes.component";
 
 const componentTypes = [
@@ -18,11 +19,11 @@ const componentTypes = [
 
 @NgModule({
     declarations: componentTypes,
-    exports: componentTypes,
+    exports: [...componentTypes, RouterModule],
     imports: [
         BrowserModule,
         ReactiveFormsModule,
-        AppRoutingModule
+        RecipesRoutingModule
     ]
 })
-export class RecipeModule {}
+export class RecipeModule { }

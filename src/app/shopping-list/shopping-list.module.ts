@@ -7,16 +7,13 @@ import { ShoppingListEditComponent } from "./shopping-list-edit/shopping-list-ed
 import { ShoppingListRoutingModule } from "./shopping-list-routing.module";
 import { ShoppingListComponent } from "./shopping-list.component";
 
-const componentTypes = [
-    ShoppingListComponent,
-    ShoppingListEditComponent,
-    ShoppingListAddComponent,
-    ShoppingItemComponent
-];
-
 @NgModule({
-    declarations: componentTypes,
-    exports: componentTypes,
+    declarations: [
+        ShoppingListComponent,
+        ShoppingListEditComponent,
+        ShoppingListAddComponent,
+        ShoppingItemComponent
+    ],
     imports: [
         BrowserModule,
         ShoppingListRoutingModule,

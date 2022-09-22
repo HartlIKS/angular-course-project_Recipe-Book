@@ -9,17 +9,14 @@ import { RecipeListComponent } from "./recipe-list/recipe-list.component";
 import { RecipesRoutingModule } from "./recipes-routing.module";
 import { RecipesComponent } from "./recipes.component";
 
-const componentTypes = [
-    RecipeListComponent,
-    RecipeItemComponent,
-    RecipeDetailComponent,
-    RecipesComponent,
-    RecipeEditComponent
-];
-
 @NgModule({
-    declarations: componentTypes,
-    exports: [...componentTypes, RouterModule],
+    declarations: [
+        RecipeListComponent,
+        RecipeItemComponent,
+        RecipeDetailComponent,
+        RecipesComponent,
+        RecipeEditComponent
+    ],
     imports: [
         BrowserModule,
         ReactiveFormsModule,

@@ -1,43 +1,26 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
-import { ShoppingListComponent } from './shopping-list/shopping-list.component';
-import { ShoppingListEditComponent } from './shopping-list/shopping-list-edit/shopping-list-edit.component';
-import { RecipeListComponent } from './recipes/recipe-list/recipe-list.component';
-import { RecipeItemComponent } from './recipes/recipe-list/recipe-item/recipe-item.component';
-import { RecipeDetailComponent } from './recipes/recipe-detail/recipe-detail.component';
-import { RecipesComponent } from './recipes/recipes.component';
-import { ShoppingItemComponent } from './shopping-list/shopping-item/shopping-item.component';
 import { DropdownDirective } from './dropdown.directive';
 import { StorageComponent } from './storage/storage.component';
-import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
 import { AppRoutingModule } from './routing.module';
-import { ShoppingListAddComponent } from './shopping-list/shopping-list-add/shopping-list-add.component';
+import { RecipeModule } from './recipes/recipes.module';
+import { ShoppingListModule } from './shopping-list/shopping-list.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    ShoppingListComponent,
-    ShoppingListEditComponent,
-    ShoppingListAddComponent,
-    RecipeListComponent,
-    RecipeItemComponent,
-    RecipeDetailComponent,
-    RecipesComponent,
-    ShoppingItemComponent,
     DropdownDirective,
-    StorageComponent,
-    RecipeEditComponent
+    StorageComponent
   ],
   imports: [
     BrowserModule,
-    FormsModule,
-    ReactiveFormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    RecipeModule,
+    ShoppingListModule
   ],
   providers: [],
   bootstrap: [AppComponent]

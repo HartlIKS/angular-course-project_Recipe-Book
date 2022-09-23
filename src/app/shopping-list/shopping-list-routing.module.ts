@@ -7,7 +7,7 @@ import { ShoppingListComponent } from "./shopping-list.component";
 
 const shoppingListRoutes: Route[] = [
     {
-        path: "shoppingList", component: ShoppingListComponent, children: [
+        path: "", component: ShoppingListComponent, children: [
             { path: ":ingredient", component: ShoppingListEditComponent, resolve: { ingredient: IngredientResolver } },
             { path: "", pathMatch: "full", component: ShoppingListAddComponent }
         ]

@@ -1,6 +1,6 @@
+import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
-import { BrowserModule } from "@angular/platform-browser";
 import { ShoppingItemComponent } from "./shopping-item/shopping-item.component";
 import { ShoppingListAddComponent } from "./shopping-list-add/shopping-list-add.component";
 import { ShoppingListEditComponent } from "./shopping-list-edit/shopping-list-edit.component";
@@ -15,7 +15,7 @@ import { ShoppingListComponent } from "./shopping-list.component";
         ShoppingItemComponent
     ],
     imports: [
-        BrowserModule,
+        CommonModule,
         ShoppingListRoutingModule,
         FormsModule
     ]

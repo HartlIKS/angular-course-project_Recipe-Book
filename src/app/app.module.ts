@@ -6,8 +6,6 @@ import { HeaderComponent } from './header/header.component';
 import { DropdownDirective } from './dropdown.directive';
 import { StorageComponent } from './storage/storage.component';
 import { AppRoutingModule } from './routing.module';
-import { RecipeModule } from './recipes/recipes.module';
-import { ShoppingListModule } from './shopping-list/shopping-list.module';
 
 @NgModule({
   declarations: [
@@ -18,9 +16,7 @@ import { ShoppingListModule } from './shopping-list/shopping-list.module';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
-    RecipeModule,
-    ShoppingListModule
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

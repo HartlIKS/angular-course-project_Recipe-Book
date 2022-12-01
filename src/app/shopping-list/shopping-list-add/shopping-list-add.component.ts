@@ -1,40 +1,50 @@
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
-import { IngredientVolume, UnitMismatch, units } from '../ingredientvolume.model';
-import { ShoppingListService } from '../shopping-list.service';
+import { AppState } from 'src/app/store/app.reducer';
+import { UnitMismatch, units } from '../ingredientvolume.model';
+import * as ShoppingList from '../store/shopping-list.action';
+
 
 @Component({
   selector: 'app-shopping-list-add',
   templateUrl: './shopping-list-add.component.html',
   styleUrls: ['./shopping-list-add.component.css']
 })
-export class ShoppingListAddComponent implements AfterViewInit {
-  unitError: UnitMismatch = null;
+export class ShoppingListAddComponent implements AfterViewInit, OnInit, OnDestroy {
+  unitError?: UnitMismatch;
 
   units = units;
 
-  private sub: Subscription;
+  private sub?: Subscription;
 
-  @ViewChild("reset", {static:false}) resetButton: ElementRef;
+  @ViewChild("reset", { static: false }) resetButton: ElementRef;
 
-  constructor(private shoppingList: ShoppingListService) { }
+  constructor(private store: Store<AppState>) { }
 
-  ngAfterViewInit(): void {
+  public ngAfterViewInit(): void {
     setTimeout(() => this.resetButton.nativeElement.click(), 1);
     ;
   }
 
+  public ngOnInit(): void {
+    this.sub = this.store.select("shoppingList").subscribe(
+      v => this.unitError = v.conversionError
+    )
+  }
+
+  public ngOnDestroy(): void {
+    this.sub!.unsubscribe();
+  }
+
   public onSubmit(form: NgForm): void {
-      try {
-        this.shoppingList.add(form.value.name, new IngredientVolume(form.value.amount, form.value.unit));
-        this.resetButton.nativeElement.click();
-      } catch (error) {
-        if (error instanceof UnitMismatch) {
-          this.unitError = error;
-        } else {
-          throw error;
-        }
-      }
+    this.store.dispatch(new ShoppingList.AddAction({
+      [form.value.name]: {
+        amount: form.value.amount,
+        unit: form.value.unit,
+      },
+    }));
+    this.resetButton.nativeElement.click();
   }
 }

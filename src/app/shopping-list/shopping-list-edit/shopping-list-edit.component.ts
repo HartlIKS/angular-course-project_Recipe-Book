@@ -1,9 +1,11 @@
 import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
+import { AppState } from 'src/app/store/app.reducer';
 import { IngredientVolume, UnitMismatch, units, convertable } from '../ingredientvolume.model';
-import { ShoppingListService } from '../shopping-list.service';
+import * as ShoppingList from '../store/shopping-list.action';
 
 @Component({
   selector: 'app-shopping-list-edit',
@@ -11,25 +13,27 @@ import { ShoppingListService } from '../shopping-list.service';
   styleUrls: ['./shopping-list-edit.component.css']
 })
 export class ShoppingListEditComponent implements OnInit, OnDestroy, AfterViewInit {
-  ingredient: { name: string, amount: IngredientVolume };
+  ingredient?: { name: string, amount: IngredientVolume };
 
-  unitError: UnitMismatch = null;
+  unitError?: UnitMismatch = null;
 
   units = units;
 
-  @ViewChild('form', {static: true, read: NgForm}) unitForm: NgForm;
+  @ViewChild('form', { static: true, read: NgForm }) unitForm: NgForm;
 
-  private sub: Subscription;
+  private sub?: Subscription;
 
-  constructor(private shoppingList: ShoppingListService, private route: ActivatedRoute, private router: Router) { }
+  constructor(private store: Store<AppState>, private router: Router) { }
 
   ngOnInit(): void {
-    this.ingredient = this.route.snapshot.data.ingredient;
-    this.sub = this.route.data.subscribe(
+    this.sub = this.store.select("shoppingList").subscribe(
       d => {
-        this.ingredient = d.ingredient;
-        this.unitForm.value.unit = this.ingredient.amount.unit;
-        this.unitForm.value.amount = this.ingredient.amount.amount;
+        this.ingredient = d.selected;
+        this.unitError = d.conversionError;
+        if (this.ingredient) setTimeout(() => this.unitForm.setValue({
+          amount: this.ingredient.amount.amount,
+          unit: this.ingredient.amount.unit
+        }), 0);
       }
     );
   }
@@ -42,34 +46,23 @@ export class ShoppingListEditComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   ngOnDestroy(): void {
-    this.sub.unsubscribe();
+    this.sub!.unsubscribe();
   }
 
-  public isConvertable(from: string, to:string): boolean {
+  public isConvertable(from: string, to: string): boolean {
     return convertable(from, to);
   }
 
   public onSubmit(form: NgForm) {
-    this.ingredient.amount = form.value.amount;
-    this.router.navigate([".."], {relativeTo: this.route});
+    this.store.dispatch(new ShoppingList.SetAction(form.value));
+    this.router.navigate(["/shoppingList"]);
   }
 
   public onUnitChange(form: NgForm) {
-    try{
-      this.ingredient.amount.convertTo(form.value.unit);
-      form.value.amount = this.ingredient.amount;
-      this.unitError = null;
-    } catch(error) {
-      if(error instanceof UnitMismatch) {
-        this.unitError = error;
-      } else {
-        throw error;
-      }
-    }
+    this.store.dispatch(new ShoppingList.ConvertAction(form.value.unit));
   }
 
   public onDeleteClicked(): void {
-    this.shoppingList.remove(this.ingredient.name);
-    this.router.navigate([".."], {relativeTo: this.route});
+    this.store.dispatch(new ShoppingList.RemoveAction());
   }
 }

@@ -1,8 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
+import { AppState } from 'src/app/store/app.reducer';
 import { Recipe } from '../recipe.model';
-import { RecipeBook } from '../recipe.service';
+import * as RecipeBook from '../store/recipe.action';
 
 @Component({
   selector: 'app-recipe-detail',
@@ -10,14 +12,14 @@ import { RecipeBook } from '../recipe.service';
   styleUrls: ['./recipe-detail.component.css']
 })
 export class RecipeDetailComponent implements OnInit, OnDestroy {
-  currentRecipe: Recipe;
-  private sub: Subscription;
+  currentRecipe?: Recipe;
+  private sub?: Subscription;
 
-  constructor(private recipeBook: RecipeBook, private route: ActivatedRoute, private router: Router) { }
+  constructor(private store: Store<AppState>, private router: Router) { }
 
   ngOnInit(): void {
-    this.sub = this.route.data.subscribe(
-      d => this.currentRecipe = d.recipe
+    this.sub = this.store.select(state => state.recipes.selected?.recipe).subscribe(
+      d => this.currentRecipe = d
     );
   }
 
@@ -26,11 +28,11 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
   }
 
   delete() {
-    this.recipeBook.delete(this.currentRecipe);
+    this.store.dispatch(new RecipeBook.RemoveAction())
     this.router.navigate(["/recipes"]);
   }
 
   addIngredientsToShoppingList() {
-    this.recipeBook.addIngredientsToShoppingList(this.currentRecipe);
+    this.store.dispatch(new RecipeBook.AddToShoppingListAction());
   }
 }

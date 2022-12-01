@@ -1,28 +1,27 @@
 export class IngredientVolume {
-    constructor(public amount: number, public unit: string) { }
+    constructor(public readonly amount: number, public readonly unit: string) { }
 
     public add(other: IngredientVolume): IngredientVolume {
-        other.convertTo(this.unit);
-        this.amount += other.amount;
-        return this;
+        return new IngredientVolume(this.amount + other.convertTo(this.unit).amount, this.unit);
     }
 
-    public convertTo(unit: string): void {
-        if (this.unit == unit) return;
+    public convertTo(unit: string): IngredientVolume {
+        if (this.unit == unit) return this;
         if (this.unit in units && unit in units) {
-            this.amount = units[unit].convert(this.amount, units[this.unit]);
-            this.unit = unit;
+            return new IngredientVolume(units[unit].convert(this.amount, units[this.unit]), unit);
         } else {
             throw new UnitMismatch(this.unit, unit);
         }
     }
-
-    public copy(): IngredientVolume {
-        return new IngredientVolume(this.amount, this.unit);
-    }
 }
 
-export function convertIngredientVolume(vol: IngredientVolume|{amount: number, unit: string}): IngredientVolume {
+export type RawIngredientVolume = {amount: number, unit: string};
+
+export type IngredientList = {[name: string]: IngredientVolume};
+
+export type RawIngredientList = {[name: string]: RawIngredientVolume};
+
+export function convertIngredientVolume(vol: IngredientVolume|RawIngredientVolume): IngredientVolume {
     if(vol instanceof IngredientVolume) return vol;
     return new IngredientVolume(vol.amount, vol.unit);
 }

@@ -1,6 +1,11 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { RecipeBook } from '../recipes/recipe.service';
+import { Component, ViewChild } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { StorageComponent } from '../storage/storage.component';
+import { AppState } from '../store/app.reducer';
+import * as App from '../store/app.action';
+import { of } from 'rxjs';
+
+const lstore = "recipeBook";
 
 @Component({
   selector: 'app-header',
@@ -8,22 +13,21 @@ import { StorageComponent } from '../storage/storage.component';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent {
-  @Output() currentPageChange = new EventEmitter<string>();
-  _currentPage: string;
-  @Input() get currentPage(): string {
-    return this._currentPage;
-  };
-  set currentPage(value: string) {
-    this._currentPage = value;
-    this.currentPageChange.emit(value);
-  }
-
-  @Input() tabs: { [property: string]: string };
-
   @ViewChild(StorageComponent, {
     static: false,
     read: StorageComponent
   }) storage: StorageComponent;
 
-  constructor(public recipes: RecipeBook) { }
+  constructor(private store: Store<AppState>) {}
+
+  public saveToLocalStorage() {
+    this.store.dispatch(new App.SaveAction(d => {
+      localStorage.setItem(lstore, JSON.stringify(d));
+      return of(localStorage.getItem(lstore));
+    }))
+  }
+
+  public loadFromLocalStorage() {
+    this.store.dispatch(new App.LoadAction(JSON.parse(localStorage.getItem(lstore))));
+  }
 }
